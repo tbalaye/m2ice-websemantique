@@ -44,6 +44,8 @@ class Parse
 			root.elements.each("RECIT/SEC|RECIT"){|sec| parse_section(sec)}
 			document.title = root.elements["PRESENTATION/TITRE"].text
 			
+			
+			document.compute_idf()
 		rescue
 			puts "File : " + path + " don't exist"  if DEBUG
 		end # begin
@@ -64,7 +66,7 @@ class Parse
 
 		# On ajoute les paragraphes trouvés
 		paragraphes.each do |p|
-			p.compute_weight
+			p.compute_tf
 			@document.add_paragraph(p)
 		end
 	end #def
