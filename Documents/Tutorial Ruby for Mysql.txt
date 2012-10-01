@@ -1,0 +1,10 @@
+Versions utilisées :
+- Mysql 5.5
+- Ruby 1.8.7
+
+Etapes :
+1. Installer WAMP
+2. Ajouter au Path (variables globales de Windows) le chemin vers les binaires de mysql
+3. Installer le development kit de ruby : https://github.com/oneclick/rubyinstaller/wiki/Development-Kit
+4. Suivre le tutorial pour installer la gem mysql à jour à ce lien : 
+    http://blog.mmediasys.com/2011/07/07/installing-mysql-on-windows-7-x64-and-using-ruby-with-it/
