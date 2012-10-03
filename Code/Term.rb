@@ -1,7 +1,7 @@
 #encoding: UTF-8
 
 class Term
-	attr_accessor :is_in_title, :weight
+	attr_accessor :is_in_title, :weight, :tf, :idf
 	attr_reader :label, :positions, :label_short
 
 	def initialize(value)
@@ -10,6 +10,8 @@ class Term
 		@is_in_title = false
 		@positions = []
 		@weight = 0
+		@tf = 0.0
+		@idf = 0.0
 	end # def
 	
 	public
@@ -21,6 +23,10 @@ class Term
 	def occurences
 		return @positions.count
 	end #def
+	
+	def weight
+		return (@tf * @idf)
+	end # def
 	
 	def ==(other)
 		return other.label == @label

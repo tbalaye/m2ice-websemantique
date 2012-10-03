@@ -1,8 +1,8 @@
 ﻿#encoding: UTF-8
 DEBUG = false
-NBDOCUMENTS = 103
+NBDOCUMENTS = 2
 
-HOST = "localhost" # ARGV.shift
+HOST = "192.168.137.1" # ARGV.shift
 USER = "websemantique" # ARGV.shift
 PASSWD = "websemantique" # ARGV.shift
 DATABASE = "websemantique"
