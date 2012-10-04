@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
+using SearchEngine.Model;
 
 namespace SearchEngine
 {
@@ -51,9 +52,16 @@ namespace SearchEngine
             return result;
         }
 
-        public int GetTermId(string term)
+        public Term GetTerm(string word)
         {
-            command.CommandText = "SELECT idTerm FROM Term WHERE Label='" + term + "';";
+            string label = word;
+
+            if (label.Length > 6)
+            {
+                label = word.Substring(0, 6);
+            }
+
+            command.CommandText = "SELECT idTerm FROM Term WHERE Label='" + label + "';";
             int idTerm = -1;
 
             connection.Open();
@@ -72,13 +80,14 @@ namespace SearchEngine
             }
             connection.Close();
 
-            return idTerm;
+            return new Term(idTerm, word, label);
         }
 
-        public List<int> GetParagraphId(int idTerm)
+        public List<Paragraph> GetParagraph(int idTerm)
         {
-            command.CommandText = "SELECT idParagraph FROM contain WHERE idTerm='" + idTerm + "';";
-            List<int> paragraphId = new List<int>();
+            //command.CommandText = "SELECT idParagraph FROM contain WHERE idTerm='" + idTerm + "';";
+            command.CommandText = "SELECT p.xpath, d.pathFile, c.weight FROM Contain c, Paragraph p, Document d WHERE idTerm='" + idTerm + "' AND d.idDocument = p.idDocument AND c.idParagraph = p.idParagraph;";
+            List<Paragraph> paragraphs = new List<Paragraph>();
 
             connection.Open();
             try
@@ -86,10 +95,7 @@ namespace SearchEngine
                 Reader = command.ExecuteReader();
                 while (Reader.Read())
                 {
-                    for (int i = 0; i < Reader.FieldCount; i++)
-                    {
-                        paragraphId.Add(Int32.Parse(Reader.GetValue(i).ToString()));
-                    }
+                    paragraphs.Add(new Paragraph(Reader.GetValue(0).ToString(), new Document(Reader.GetValue(1).ToString()), Double.Parse(Reader.GetValue(2).ToString())));
                 }
             }
             catch (MySqlException ex)
@@ -98,7 +104,9 @@ namespace SearchEngine
             }
             connection.Close();
 
-            return paragraphId;
+            return paragraphs;
         }
+
+        
     }
 }
