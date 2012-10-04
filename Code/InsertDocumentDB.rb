@@ -50,14 +50,14 @@ class InsertDocumentDB
 	def insert_term(term)
 		@st_insert_term.execute(term.label_short)
 		
-		@word[term] = @st_insert_term.insert_id if @word[term] == nil
+		@word[term.label_short] = @st_insert_term.insert_id if @word[term.label_short] == nil
 		
-		
-		if(@word[term] == 0)
-			@word[term] = @st_select_term.execute(term.label_short).fetch[0]
+		# on vérifie que l'id est bon, sinon on le récupère dans la bd
+		if(@word[term.label_short] == 0)
+			@word[term.label_short] = @st_select_term.execute(term.label_short).fetch[0]
 		end # if
 		
-		return @word[term]
+		return @word[term.label_short]
 	end #def
 	
 	def insert_position_term(term, id_contain)
