@@ -9,8 +9,10 @@ class InsertDocumentDB
 		@st_insert_doc = connexion.prepare("INSERT INTO Document (label, pathFile) VALUES (?, ?) ON DUPLICATE KEY UPDATE label=VALUES(label)")
 		@st_insert_paragraph = connexion.prepare("INSERT IGNORE INTO Paragraph(xpath, idDocument) Value(?, ?)")
 		@st_insert_term = connexion.prepare("INSERT IGNORE INTO Term(label) Value(?)")
+		@st_select_term = connexion.prepare("SELECT idterm FROM Term WHERE label = ?")
 		@st_insert_contain = connexion.prepare("INSERT IGNORE INTO Contain(weight, isTitle, idTerm, idParagraph) Value(?, ?, ?, ?)")
 		@st_insert_position_term = connexion.prepare("INSERT IGNORE INTO Position_Term(valuePos, word, idContain) Value(?, ?, ?)")
+		@word = {}
 	end #def
 	
 	# Insert des info du document
@@ -48,7 +50,14 @@ class InsertDocumentDB
 	def insert_term(term)
 		@st_insert_term.execute(term.label_short)
 		
-		return @st_insert_term.insert_id
+		@word[term] = @st_insert_term.insert_id if @word[term] == nil
+		
+		
+		if(@word[term] == 0)
+			@word[term] = @st_select_term.execute(term.label_short).fetch[0]
+		end # if
+		
+		return @word[term]
 	end #def
 	
 	def insert_position_term(term, id_contain)
