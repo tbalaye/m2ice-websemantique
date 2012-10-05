@@ -72,7 +72,7 @@ class Parse
 	end #def
 
 	def parse_text(element, is_title)
-		words = Paragraph.new(element.xpath.to_s)
+		words = Paragraph.new(element.xpath.to_s.sub("BALADE/RECIT/", "BALADE[1]/RECIT[1]/").sub("SEC/", "SEC[1]/"))
 		text = element.text.downcase
 		# Pour tous les mots
 		text.scan(/([a-zàâçéèêëîïôûùüÿñæœ]+)/).each_with_index do |w, position|
