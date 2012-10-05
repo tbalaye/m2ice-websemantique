@@ -36,7 +36,7 @@ CREATE UNIQUE INDEX ind_term_label ON Term(label);
 
 CREATE TABLE Contain(
   idContain INTEGER NOT NULL AUTO_INCREMENT,
-  weight NUMERIC(6,6),
+  weight DECIMAL(12,8),
   isTitle BOOLEAN,
   idTerm INTEGER,
   idParagraph INTEGER,

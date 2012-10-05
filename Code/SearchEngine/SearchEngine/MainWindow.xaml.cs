@@ -32,7 +32,24 @@ namespace SearchEngine
 
         private void button_go_Click(object sender, RoutedEventArgs e)
         {
+            Search();
+        }
+
+        private void TextBox_query_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key.Equals(Key.Enter))
+            {
+                Search();
+            }
+        }
+
+        private void Search()
+        {
             Search search = new Search(new Query(TextBox_query.Text));
+
+            // Display result on GUI list
+            textBox_result.Clear();
+            textBox_result.AppendText(search.Result);
         }
     }
 }
