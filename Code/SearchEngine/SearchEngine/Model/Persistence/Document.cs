@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SearchEngine.Model
+namespace SearchEngine.Model.Persistence
 {
     class Document
     {

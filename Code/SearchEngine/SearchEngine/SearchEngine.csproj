@@ -56,11 +56,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Document.cs" />
-    <Compile Include="Model\Paragraph.cs" />
+    <Compile Include="Model\Comparison\Comparator.cs" />
+    <Compile Include="Model\Persistence\Document.cs" />
+    <Compile Include="Model\Persistence\Paragraph.cs" />
+    <Compile Include="Model\Comparison\Qrel.cs" />
+    <Compile Include="Model\Comparison\QrelLine.cs" />
     <Compile Include="Model\Query.cs" />
     <Compile Include="Model\Search.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Tools.cs" />
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -69,13 +73,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Connector.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Term.cs" />
+    <Compile Include="Model\Persistence\Term.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +102,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controller\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

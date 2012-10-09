@@ -4,6 +4,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
 using SearchEngine.Model;
+using SearchEngine.Model.Persistence;
 
 namespace SearchEngine
 {
@@ -12,98 +13,119 @@ namespace SearchEngine
         string MyConString = "SERVER=localhost;" +
             "DATABASE=websemantique;" +
             "UID=websemantique;" +
-            "PASSWORD=websemantique;";
+            "PASSWORD=websemantique;" +
+            "Allow User Variables=True;";
 
         MySqlConnection connection;
         MySqlCommand command;
-        MySqlDataReader Reader;
 
         public Connector() {
             connection = new MySqlConnection(MyConString);
             command = connection.CreateCommand();
         }
 
-        public String Query(string _query)
-        {
-            command.CommandText = _query;
-            string result = "";
-            connection.Open();
-
-            try
-            {
-                Reader = command.ExecuteReader();
-
-                while (Reader.Read())
-                {
-                    string row = "";
-                    for (int i = 0; i < Reader.FieldCount; i++)
-                    {
-                        row = Reader.GetValue(i).ToString();
-                    }
-                    result += row + "\n";
-                }
-            }
-            catch (MySqlException ex)
-            {
-                result = ex.Message;
-            }
-            connection.Close();
-
-            return result;
-        }
-
+        /// <summary>
+        /// Get term from MySQL database
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns>Term object</returns>
         public Term GetTerm(string word)
         {
-            string label = word;
-
-            if (label.Length > 6)
-            {
-                label = word.Substring(0, 6);
-            }
-
-            command.CommandText = "SELECT idTerm FROM Term WHERE Label='" + label + "';";
+            string label = Tools.ToLabel(word);
             int idTerm = -1;
-
-            connection.Open();
+            command.CommandText = "SELECT idTerm FROM Term WHERE Label='" + label + "';";
             try
             {
-                Reader = command.ExecuteReader();
+                connection.Open();
+                MySqlDataReader Reader = command.ExecuteReader();
                 if (Reader.HasRows)
                 {
                     Reader.Read();
                     idTerm = Int32.Parse(Reader.GetValue(0).ToString());
                 }
+                Reader.Close();
+                connection.Close();
             }
             catch (MySqlException ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            connection.Close();
-
             return new Term(idTerm, word, label);
         }
 
-        public List<Paragraph> GetParagraph(int idTerm)
+        /// <summary>
+        /// Get paragraph from MySQL database
+        /// </summary>
+        /// <param name="idTerm"></param>
+        /// <returns>Paragraph list</returns>
+        public List<Paragraph> GetParagraph(List<Term> terms)
         {
-            //command.CommandText = "SELECT idParagraph FROM contain WHERE idTerm='" + idTerm + "';";
-            command.CommandText = "SELECT p.xpath, d.pathFile, c.weight FROM Contain c, Paragraph p, Document d WHERE idTerm='" + idTerm + "' AND d.idDocument = p.idDocument AND c.idParagraph = p.idParagraph;";
+            Int32 inc;
             List<Paragraph> paragraphs = new List<Paragraph>();
 
-            connection.Open();
-            try
+            if (terms.Count > 0)
             {
-                Reader = command.ExecuteReader();
-                while (Reader.Read())
+                // Building Contain request part
+                StringBuilder requestContain = new StringBuilder();
+                requestContain.Append("(select (weight * @weight) as weight, idParagraph, idTerm from contain where ");
+                inc = 1;
+                foreach (Term term in terms)
                 {
-                    paragraphs.Add(new Paragraph(Reader.GetValue(0).ToString(), new Document(Reader.GetValue(1).ToString()), Double.Parse(Reader.GetValue(2).ToString())));
+                    requestContain.Append("(idterm = " + term.IdTerm + " and @weight := " + 1.0 + ") ");
+                    if (inc < terms.Count)
+                    {
+                        requestContain.Append("or ");
+                        inc += 1;
+                    }
+                }
+                requestContain.Append(")");
+
+                // Building main request
+                StringBuilder request = new StringBuilder();
+                request.Append("set @weight:=0;");
+                request.Append("select par.xpath, doc.pathFile, sum(terw.weight) as weight ");
+                request.Append("from ");
+                request.Append("contain con, ");
+                request.Append("document doc, ");
+                request.Append("paragraph par, ");
+                request.Append(requestContain.ToString() + " terw ");
+                request.Append("where ");
+                request.Append("terw.idParagraph = con.idParagraph and ");
+                request.Append("par.idDocument = doc.idDocument and ");
+                request.Append("par.idParagraph = con.idParagraph and ");
+                request.Append("(");
+                inc = 1;
+                foreach (Term term in terms)
+                {
+                    request.Append("con.idTerm = " + term.IdTerm + " ");
+                    if (inc < terms.Count)
+                    {
+                        request.Append("or ");
+                        inc += 1;
+                    }
+                }
+                request.Append(") ");
+                request.Append("group by con.idParagraph ");
+                request.Append("order by con.idParagraph desc;");
+
+                command.CommandText = request.ToString();
+
+                try
+                {
+                    connection.Open();
+                    MySqlDataReader Reader = command.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        paragraphs.Add(new Paragraph(Reader.GetValue(0).ToString(), new Document(Reader.GetValue(1).ToString()), Double.Parse(Reader.GetValue(2).ToString())));
+                    }
+                    Reader.Close();
+                    connection.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            connection.Close();
-
             return paragraphs;
         }
 
