@@ -18,37 +18,26 @@ class Parse
 		@document = Document_parse.new(path)
 
 		#On ajoute les termes dont on ne va pas tenir compte
-		begin
-			fichier = File.open("./stoplist/stoplist.txt", "r")
-			fichier.each_line {|ligne| @words_not_use << ligne.chomp.downcase}
-			fichier.close
-			
-			# On calcule les éléments du document
-			parse_document(path)
-		rescue
-			puts "File : stoplist don't exist, can't try parse" if DEBUG
-		end # begin		
+		fichier = File.open("./stoplist/stoplist.txt", "r")
+		fichier.each_line {|ligne| @words_not_use << ligne.chomp.downcase}
+		fichier.close
+		
+		# On calcule les éléments du document
+		parse_document(path)	
 	end
 	
 	private
 
 	# On parse chaque section ou paragraphe seul
 	def parse_document(path)
-		begin
-			file = File.new(path)
-			doc = Document.new(file)
-			
-			puts "File : " + path + " parse"  if DEBUG
-			root = doc.root
-	
-			root.elements.each("RECIT/SEC|RECIT"){|sec| parse_section(sec)}
-			document.title = root.elements["PRESENTATION/TITRE"].text
-			
-			
-			document.compute_idf()
-		rescue
-			puts "File : " + path + " don't exist"  if DEBUG
-		end # begin
+		file = File.new(path)
+		doc = Document.new(file)
+		root = doc.root
+
+		root.elements.each("RECIT/SEC|RECIT"){|sec| parse_section(sec)}
+		document.title = root.elements["PRESENTATION/TITRE"].text
+		
+		document.compute_idf()
 	end # def
 
 	def parse_section(sec)
@@ -73,22 +62,24 @@ class Parse
 
 	def parse_text(element, is_title)
 		words = Paragraph.new(element.xpath.to_s.sub("BALADE/RECIT/", "BALADE[1]/RECIT[1]/").sub("SEC/", "SEC[1]/"))
-		text = element.text.downcase
-		# Pour tous les mots
-		text.scan(/([a-zàâçéèêëîïôûùüÿñæœ]+)/).each_with_index do |w, position|
-			word_text = w[0].to_s
-			if(!@words_not_use.include?(word_text) and word_text.size > 2) # On teste en Capitalize pour ne pas tenir compte de la case
-				word = Term.new(word_text)
-				word.is_in_title = is_title
-				
-				# Si on est pas dans le titre, on ajoute la position
-				word.add_position(position) if(not is_title)
-				
-				# On ajoute le terme au paragraphe
-				words.add_term(word)
-			end #if
-		end #split
-		
+		if element.text != nil
+			text = element.text.downcase
+			# Pour tous les mots
+			text.scan(/([a-zàâçéèêëîïôûùüÿñæœ]+)/).each_with_index do |w, position|
+				word_text = w[0].to_s
+				if(!@words_not_use.include?(word_text) and word_text.size > 2) # On teste en Capitalize pour ne pas tenir compte de la case
+					word = Term.new(word_text)
+					word.is_in_title = is_title
+					
+					# Si on est pas dans le titre, on ajoute la position
+					word.add_position(position) if(not is_title)
+					
+					# On ajoute le terme au paragraphe
+					words.add_term(word)
+				end #if
+			end #split
+		end # if
+			
 		return words
 	end #def
 end #class
