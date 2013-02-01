@@ -1,10 +1,11 @@
 ﻿#!/usr//bin/ruby1.9.1
 #encoding: UTF-8
 
+$LOAD_PATH << File.dirname(__FILE__)
+
 require 'socket'
-require './Semaphore'
-require './Main_Crawl'
-require './Notifier_crawl'
+require 'Share/Semaphore'
+require 'Main_Crawl'
 
 class Server
 	def initialize()

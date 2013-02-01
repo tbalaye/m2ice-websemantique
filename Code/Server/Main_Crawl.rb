@@ -1,13 +1,15 @@
 ﻿#encoding: UTF-8
 STDOUT.sync = true
 
-require 'thread'
-require './InsertDocumentDB'
-require './Semaphore'
-require './Crawler'
-require './Indexer'
-require './Share_Document'
+$LOAD_PATH << File.dirname(__FILE__)
 
+require 'Document/InsertDocumentDB'
+require 'Share/Semaphore'
+require 'Crawler/Crawler'
+require 'Indexer/Indexer'
+require 'Share/Share_Document'
+
+require 'thread'
 require "rubygems"
 require "mysql"
 
