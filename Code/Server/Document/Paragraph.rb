@@ -51,10 +51,7 @@ class Paragraph
 	def compute_tf
 		terms.each do |t|
 			t.tf = t.occurences.to_f / (nb_word.to_f + t.occurences.to_f)
-			#t.weight += 100.0 if t.is_in_title
-		
 		end #each
-		
 	end
 	
 	private
