@@ -13,13 +13,18 @@ class Server
 		@sem_msg = Semaphore.new(1)
 
 		server = TCPServer.open(PORT)
-		puts "Server running"
+		LOG.info ("Server running on port " + PORT.to_s)
 		
+		# Message à la fermeture du serveur
+		trap("INT") do
+			LOG.info("Server shutdown.")
+			shutdown()
+		end
 		begin
+			@client = server.accept
 			begin
-				@client = server.accept
 				@wait_msg = true
-				puts "new Client"
+				LOG.info ("New client")
 				send_msg(HELLO)
 				while @wait_msg
 					msg = @client.gets.chomp
@@ -34,12 +39,12 @@ class Server
 	end #def
 	
 	def doc_crawled(doc)
-		puts "Doc " +  doc + " crawled"
+		LOG.info ("Doc " +  doc + " crawled")
 		send_msg(CRAWLDOC)
 	end # def
 	
 	def doc_indexed(doc)
-		puts "Doc " +  doc + " indexed"
+		LOG.info ("Doc " +  doc + " indexed")
 		send_msg(INDEXDOC)
 	end # def
 	
@@ -54,7 +59,7 @@ class Server
 	private
 	
 	def receive_msg(msg)
-		puts "Receive: " +  msg
+		LOG.info ("Receive: " +  msg)
 		args = msg.split
 		
 		if (args[0] == START)
@@ -90,7 +95,7 @@ class Server
 	
 	def disconnect()
 		@wait_msg = false
-		puts "Client disconnected"
+		LOG.info ("Client disconnected")
 	end #def
 end #class
 

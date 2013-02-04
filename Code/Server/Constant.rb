@@ -1,5 +1,6 @@
 ﻿$LOAD_PATH << File.dirname(__FILE__)
 
+require 'logger'
 
 #encoding: UTF-8
 DEBUG = false
@@ -42,3 +43,15 @@ PORT_ONTOLOGIE = "3030"
 ONTOLOGY_FILE_PATH = './ontologies/Baladefusion.owl'
 
 # Webservice
+
+
+
+# log
+# Création du répertoire et du fichiers de log, découpé tous les 1024000 bytes et sauvegardés dans des fichiers '.old'
+URL_LOG = File.dirname(__FILE__) + "/Logs"
+
+if not File.directory?(URL_LOG)
+	Dir::mkdir(URL_LOG, 0775)
+end #if
+LOG = Logger.new(URL_LOG + '/back-end.log', 10, 1024000)
+LOG.level = Logger::INFO
