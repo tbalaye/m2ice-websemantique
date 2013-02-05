@@ -17,7 +17,6 @@ class Server
 		
 		# Message à la fermeture du serveur
 		trap("INT") do
-			LOG.info("Server shutdown.")
 			shutdown()
 		end
 		begin
@@ -97,6 +96,12 @@ class Server
 		@wait_msg = false
 		LOG.info ("Client disconnected")
 	end #def
+	
+		
+	def shutdown()
+		LOG.info("Server shutdown.")
+		exit()
+	end
 end #class
 
 
