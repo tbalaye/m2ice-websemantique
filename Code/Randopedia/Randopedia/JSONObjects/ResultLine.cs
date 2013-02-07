@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Randopedia.Controllers
+namespace Randopedia.JSONObjects
 {
     public class ResultLine
     {

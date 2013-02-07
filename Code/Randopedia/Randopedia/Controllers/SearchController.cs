@@ -6,6 +6,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
+using Randopedia.JSONObjects;
 
 namespace Randopedia.Controllers
 {
@@ -16,7 +18,8 @@ namespace Randopedia.Controllers
         //
         public ActionResult Index()
         {
-            ViewBag.Result = "";
+            ViewBag.Result = new Result();
+            ViewBag.IsSearch = false;
             if (Request.IsAjaxRequest())
             {
                 return PartialView("PartialSearch");
@@ -33,22 +36,26 @@ namespace Randopedia.Controllers
         [HttpPost]
         public ActionResult SearchRando(string SearchString)
         {
-            string json = new WebClient().DownloadString("http://172.31.190.56:4567/search/" + SearchString);
-
-            Result res = JsonConvert.DeserializeObject<Result>(json);
-            ViewBag.Request = res.Request;
-            ViewBag.Precision = res.Precision;
-            ViewBag.Rappel = res.Rappel;
-            ViewBag.Results = res.Results;
+            string json = "";
+            string searchServer = ConfigurationManager.AppSettings["SearchServer"];
+            try
+            {
+                json = new WebClient().DownloadString(searchServer + SearchString);
+            }
+            catch (WebException ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.SearchServer = searchServer;
+            }
+            ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
+            ViewBag.IsSearch = true;
 
             if (Request.IsAjaxRequest())
             {
-                ViewBag.Result = Regex.Split(SearchString, @"[ ]+");
                 return PartialView("PartialSearch");
             }
             else
             {
-                ViewBag.Result = "";
                 return View("Index");
             }
         }

@@ -35,6 +35,15 @@ body {
     border-radius:5px;
 }
 
+.highlighted-content {
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    margin-top: 15px;
+    box-shadow:2px 2px 2px #C0C0C0 inset;
+    border-radius:5px;
+}
+
 .result-stats {
     background-color: lightgray;
     color: black;
