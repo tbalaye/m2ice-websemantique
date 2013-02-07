@@ -1,11 +1,21 @@
 ﻿<h4>@ViewBag.Call</h4>
 
-@foreach (String term in ViewBag.Result)
-{ 
-    if (!term.IsEmpty())
+@if (ViewBag.Request != null && ViewBag.Rappel != null && ViewBag.Precision != null)
+{
+    <div class="result-stats">
+        <p><b>Recherche : </b>@ViewBag.Request</p>
+        <p><b>Rappel : </b>@ViewBag.Rappel</p>
+        <p><b>Precision : </b>@ViewBag.Precision</p>
+    </div>
+}
+
+@if (ViewBag.Results != null)
+{
+    foreach (Randopedia.Controllers.ResultLine result in ViewBag.Results)
     {
-        <div class="resultItem">
-            <h4>@term</h4>
+        <div class="result-item">
+            <p><b>Xpath : </b>@result.Xpath</p>
+            <p><b>Content : </b>@result.Content</p>
         </div>
     }
 }
