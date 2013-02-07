@@ -1,0 +1,11 @@
+﻿<h4>@ViewBag.Call</h4>
+
+@foreach (String term in ViewBag.Result)
+{ 
+    if (!term.IsEmpty())
+    {
+        <div class="resultItem">
+            <h4>@term</h4>
+        </div>
+    }
+}
