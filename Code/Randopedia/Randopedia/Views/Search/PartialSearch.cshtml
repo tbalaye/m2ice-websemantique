@@ -1,21 +1,31 @@
-﻿<h4>@ViewBag.Call</h4>
-
-@if (ViewBag.Request != null && ViewBag.Rappel != null && ViewBag.Precision != null)
-{
-    <div class="result-stats">
-        <p><b>Recherche : </b>@ViewBag.Request</p>
-        <p><b>Rappel : </b>@ViewBag.Rappel</p>
-        <p><b>Precision : </b>@ViewBag.Precision</p>
-    </div>
-}
-
-@if (ViewBag.Results != null)
-{
-    foreach (Randopedia.Controllers.ResultLine result in ViewBag.Results)
+﻿<div class="result-stats">
+    @if (ViewBag.Result != null && ViewBag.IsSearch)
     {
-        <div class="result-item">
-            <p><b>Xpath : </b>@result.Xpath</p>
-            <p><b>Content : </b>@result.Content</p>
-        </div>
+        <p><b>Recherche : </b>@ViewBag.Result.Request</p>
+        <p><b>Rappel : </b>@ViewBag.Result.Rappel</p>
+        <p><b>Precision : </b>@ViewBag.Result.Precision</p>
+    } 
+    else if (ViewBag.Result == null) 
+    {
+        <p><b style="color: red">@ViewBag.Error : </b></p>
+        <div class="highlighted-content"><a href="@ViewBag.SearchServer">@ViewBag.SearchServer</a></div>
+    } 
+    else 
+    {
+        <p><b style="color: grey">Saisissez votre recherche ci-dessus</b></p>   
     }
-}
+</div>
+
+<div class="result-list">
+    @if (ViewBag.Result != null)
+    {
+        foreach (Randopedia.JSONObjects.ResultLine result in ViewBag.Result.Results)
+        {
+            <div class="result-item">
+                <p><b>Xpath : </b>@result.Xpath</p>
+                <p><b>Content : </b>@result.Content</p>
+            </div>
+        }
+    }
+</div>
+
