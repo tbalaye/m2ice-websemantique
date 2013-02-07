@@ -2,8 +2,8 @@
 @font-face
 {
     font-family: rechercheFont;
-    src: url('Neou-Thin.ttf'),
-         url('Neou-Thin.eot'); /* IE9+ */
+    src: url('GeosansLight.ttf'),
+         url('GeosansLight.eot'); /* IE9+ */
 }
 
 #search-title {
