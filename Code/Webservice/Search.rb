@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'json'
 
 get '/search/:label' do
 	label = params[:label]
@@ -8,6 +9,6 @@ get '/search/:label' do
 		status 404
 	else
 		status 200
-		p label.split(" ") * "\n"
+		{method: label, version: "1.00"}.to_json
 	end #if
 end #get '/search/:label'
