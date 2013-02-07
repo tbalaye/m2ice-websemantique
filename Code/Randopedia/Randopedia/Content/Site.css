@@ -1,4 +1,17 @@
-﻿html {
+﻿
+@font-face
+{
+    font-family: rechercheFont;
+    src: url('Neou-Thin.ttf'),
+         url('Neou-Thin.eot'); /* IE9+ */
+}
+
+#search-title {
+    font-family:rechercheFont;
+    font-size: 12px;
+}
+
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
@@ -13,8 +26,18 @@ body {
     padding: 0;
 }
 
-.resultItem {
+.result-item {
     background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    margin-top: 15px;
+    box-shadow:2px 2px 2px #C0C0C0 inset;
+    border-radius:5px;
+}
+
+.result-stats {
+    background-color: lightgray;
+    color: black;
     padding: 10px;
     border-radius: 15px;
     margin-top: 15px;

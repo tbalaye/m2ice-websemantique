@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -31,6 +33,14 @@ namespace Randopedia.Controllers
         [HttpPost]
         public ActionResult SearchRando(string SearchString)
         {
+            string json = new WebClient().DownloadString("http://172.31.190.56:4567/search/" + SearchString);
+
+            Result res = JsonConvert.DeserializeObject<Result>(json);
+            ViewBag.Request = res.Request;
+            ViewBag.Precision = res.Precision;
+            ViewBag.Rappel = res.Rappel;
+            ViewBag.Results = res.Results;
+
             if (Request.IsAjaxRequest())
             {
                 ViewBag.Result = Regex.Split(SearchString, @"[ ]+");
