@@ -30,6 +30,8 @@ class Main_Crawl
 			dbh = Mysql.init
 			dbh.options(Mysql::SET_CHARSET_NAME, 'utf8')
 			con = dbh.real_connect(host, user, password, database)
+			con.commit
+			con.autocommit(false)
 			insert_db = InsertDocumentDB.new(con)
 			
 			(1..nb_thread_crawl).each do
@@ -47,6 +49,7 @@ class Main_Crawl
 			
 			services.each {|s| s.join}
 		rescue Mysql::Error => e
+			con.rollback
 			@server.error_db(e.to_s)
 			puts "Error code: #{e.errno}"
 			puts "Error message: #{e.error}"

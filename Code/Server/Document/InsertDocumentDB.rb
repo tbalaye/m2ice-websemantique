@@ -17,6 +17,7 @@ class InsertDocumentDB
 		@st_select_term = connexion.prepare("SELECT idterm FROM Term WHERE label = ?")
 		@st_insert_contain = connexion.prepare("INSERT IGNORE INTO Contain(weight, isTitle, idTerm, idParagraph) Value(?, ?, ?, ?)")
 		@st_insert_position_term = connexion.prepare("INSERT IGNORE INTO Position_Term(valuePos, word, idContain) Value(?, ?, ?)")
+		@con = connexion
 			
 		@sem_insert_doc = Semaphore.new(1)
 		@sem_insert_contain = Semaphore.new(1)
@@ -29,6 +30,7 @@ class InsertDocumentDB
 	# Insert des info du document
 	def compute(document)
 		insert_document(document)
+		@con.commit
 	end # def
 	
 	private
