@@ -20,17 +20,24 @@
 }
 
 
-<div id="search-title">
-    <h2>Rechercher</h2>
-</div>
+
 
 <div id="search-box">
     
     @using (Ajax.BeginForm("SearchRando", options)) 
     {   
-        <div>
-            @Html.TextBox("SearchString")
-            <input type="submit" value="Ok!" />
+        <div id="search-bar">
+            <div id="search-title">
+                <h2>Rechercher une balade</h2>
+            </div>
+            <div id="search-field">
+                @Html.TextBox("SearchString")
+                <input type="submit" value="Ok!" /><br />
+            </div>
+            <div id="search-options">
+                @Html.CheckBox("SearchMode", true) Ontologie
+                @Html.CheckBox("SearchDetail", true) Détaillée
+            </div>
         </div>
     }
     

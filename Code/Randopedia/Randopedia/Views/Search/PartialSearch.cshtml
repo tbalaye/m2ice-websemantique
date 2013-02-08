@@ -1,18 +1,36 @@
-﻿<div class="result-stats">
+﻿<div id="search-stats">
     @if (ViewBag.Result != null && ViewBag.IsSearch)
     {
-        <p><b>Recherche : </b>@ViewBag.Result.Request</p>
-        <p><b>Rappel : </b>@ViewBag.Result.Rappel</p>
-        <p><b>Precision : </b>@ViewBag.Result.Precision</p>
+        if (ViewBag.Result.Results.Length > 0)
+        {
+            <p>@ViewBag.Result.Results.Length résultats (@ViewBag.Result.TimeCompute secondes)</p>
+        }
+        else if (ViewBag.Result.Results.Length == 1)
+        {
+            <p>1 résultat (@ViewBag.Result.TimeCompute secondes)</p>
+        }
+        else
+        {
+            <p>Aucun résultat (@ViewBag.Result.TimeCompute secondes)</p>
+        }
+    }
+</div>
+
+<div id="result-stats">
+    @if (ViewBag.Result != null && ViewBag.IsSearch)
+    {
+        <b>Recherche : </b>@ViewBag.Result.Request<br />
+        <b>Rappel : </b>@ViewBag.Result.Rappel<br />
+        <b>Precision : </b>@ViewBag.Result.Precision<br />
     } 
     else if (ViewBag.Result == null) 
     {
-        <p><b style="color: red">@ViewBag.Error : </b></p>
-        <div class="highlighted-content"><a href="@ViewBag.SearchServer">@ViewBag.SearchServer</a></div>
+        <b style="color: red">@ViewBag.Error : </b><br />
+        <div class="highlighted-content"><a href="@ViewBag.SearchServer" target="_blank">@ViewBag.SearchServer</a></div>
     } 
     else 
     {
-        <p><b style="color: grey">Saisissez votre recherche ci-dessus</b></p>   
+        <b style="color: grey">Saisissez votre recherche ci-dessus</b>
     }
 </div>
 
@@ -22,8 +40,8 @@
         foreach (Randopedia.JSONObjects.ResultLine result in ViewBag.Result.Results)
         {
             <div class="result-item">
-                <p><b>Xpath : </b>@result.Xpath</p>
-                <p><b>Content : </b>@result.Content</p>
+                <b>Xpath : </b>@result.Xpath<br />
+                <b>Content : </b>@result.Content<br />
             </div>
         }
     }

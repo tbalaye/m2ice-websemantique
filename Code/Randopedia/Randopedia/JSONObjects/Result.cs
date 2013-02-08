@@ -61,5 +61,21 @@ namespace Randopedia.JSONObjects
                 results = value;
             }
         }
+
+        private string timeCompute;
+        /// <summary>
+        /// Temps d'exécution de la recherche côté serveur
+        /// </summary>
+        public string TimeCompute
+        {
+            get
+            {
+                return (timeCompute == null) ? ("") : (timeCompute);
+            }
+            set
+            {
+                timeCompute = value;
+            }
+        }
     }
 }

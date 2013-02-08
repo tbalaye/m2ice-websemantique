@@ -34,18 +34,20 @@ namespace Randopedia.Controllers
         // POST: /Search/SearchRando/
         //
         [HttpPost]
-        public ActionResult SearchRando(string SearchString)
+        public ActionResult SearchRando(string SearchString, bool SearchMode, bool SearchDetail)
         {
             string json = "";
-            string searchServer = ConfigurationManager.AppSettings["SearchServer"];
+            string url = ConfigurationManager.AppSettings["SearchServer"];
+            url += (SearchMode) ? ("SearchOntologie/") : ("Search/");
+
             try
             {
-                json = new WebClient().DownloadString(searchServer + SearchString);
+                json = new WebClient().DownloadString(url + SearchString);
             }
             catch (WebException ex)
             {
                 ViewBag.Error = ex.Message;
-                ViewBag.SearchServer = searchServer;
+                ViewBag.SearchServer = url;
             }
             ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
             ViewBag.IsSearch = true;
