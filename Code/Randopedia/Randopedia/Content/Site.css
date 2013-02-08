@@ -68,12 +68,11 @@ body {
 
 #result-stats {
     background-color: lightgray;
-    color: black;
-    padding: 10px;
     border-radius: 15px;
-    margin-top: 15px;
     box-shadow:2px 2px 2px #C0C0C0 inset;
-    border-radius:5px;
+    color: grey;
+    margin-top: 15px;
+    padding: 10px;
 }
 
 a {
