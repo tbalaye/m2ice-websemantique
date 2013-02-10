@@ -104,5 +104,7 @@ class Server
 	end
 end #class
 
-
-server = Server.new()
+# Restriction à l'exécution : il n'est pas exécuté si il est juste importé
+if __FILE__ == $0
+	server = Server.new()
+end #if
