@@ -27,75 +27,43 @@ class Connector
 		return term
 	end # get_term
 	
-	def get_paragraphs(terms)
-		where_condition = "(select (weight * @weight) as weight, idParagraph, idTerm from contain where "
-		terms.each_with_index do |t, i|
-			where_condition += "(idterm = " + t.id.to_s + " and @weight := 1.0) "
-			where_condition += "or " if terms.size < (i + 1)
-		end #each
-		
-		p where_condition
-	
-	
-		select = @con.prepare("set @weight:=0;" +
-								"select par.xpath, doc.pathFile, sum(terw.weight) as weight from" +
-									"contain con, document doc, paragraph par, "+
-									"(select (weight * @weight) as weight, idParagraph, idTerm from contain where " + where_condition + ") terw where" + 
-										"terw.idParagraph = con.idParagraph and par.idDocument = doc.idDocument and par.idParagraph = con.idParagraph and (" +
-											"..." +
-										") group by con.idParagraph " +
-										"order by con.idParagraph desc;")
-		
-		
-		
-=begin
-		        // Building Contain request part
-                StringBuilder requestContain = new StringBuilder();
-                requestContain.Append("(select (weight * @weight) as weight, idParagraph, idTerm from contain where ");
-                inc = 1;
-                foreach (Term term in terms)
-                {
-                    requestContain.Append("(idterm = " + term.IdTerm + " and @weight := " + 1.0 + ") ");
-                    if (inc < terms.Count)
-                    {
-                        requestContain.Append("or ");
-                        inc += 1;
-                    }
-                }
-                requestContain.Append(")");
-
-                // Building main request
-                StringBuilder request = new StringBuilder();
-                request.Append("set @weight:=0;");
-                request.Append("select par.xpath, doc.pathFile, sum(terw.weight) as weight ");
-                request.Append("from ");
-                request.Append("contain con, ");
-                request.Append("document doc, ");
-                request.Append("paragraph par, ");
-                request.Append(requestContain.ToString() + " terw ");
-                request.Append("where ");
-                request.Append("terw.idParagraph = con.idParagraph and ");
-                request.Append("par.idDocument = doc.idDocument and ");
-                request.Append("par.idParagraph = con.idParagraph and ");
-                request.Append("(");
-                inc = 1;
-                foreach (Term term in terms)
-                {
-                    request.Append("con.idTerm = " + term.IdTerm + " ");
-                    if (inc < terms.Count)
-                    {
-                        request.Append("or ");
-                        inc += 1;
-                    }
-                }
-                request.Append(") ");
-                request.Append("group by con.idParagraph ");
-                request.Append("order by con.idParagraph desc;");
-=end
-	
+	def get_all_paragraphs(terms)
+		return get_paragraphs(terms, -1)
 	end #get_paragraphs
 	
-	private
+	def get_paragraphs(terms, max_paragraphes)
+		where_condition_weight = ""
+		where_condition_term = ""
+		paragraphs = []
+		
+		terms.each_with_index do |t, i|
+			where_condition_weight += "(idterm = " + t.id.to_s + " and @weight := 1.0) "
+			where_condition_term += "con.idTerm = " + t.id.to_s + " "
+			if terms.size > (i + 1)
+				where_condition_weight += "or "
+				where_condition_term += "or "
+			end # if
+		end #each
+		
+		request = "SELECT par.xpath, doc.pathFile, SUM(terw.weight) as weight FROM Contain con, Document doc, Paragraph par,  "
+		request += "(SELECT (weight * @weight) as weight, idParagraph, idTerm FROM Contain WHERE (" + where_condition_weight + ")) terw "
+		request += "WHERE terw.idParagraph = con.idParagraph and par.idDocument = doc.idDocument and par.idParagraph = con.idParagraph and (" + where_condition_term +") "
+		request += "GROUP BY con.idParagraph "
+		request += "ORDER BY weight desc "
+		if(max_paragraphes < 0)
+			request += ";"
+		else
+			request += "Limit " + max_paragraphes.to_s + ";"
+		end #if
+		
+		select = @con.prepare(request)
+		result = select.execute
+		result.each do |p|
+			paragraphs << {xpath:p[0], pathFile:p[1], weight:p[2]}
+		end
+		
+		return paragraphs
+	end #get_paragraphs
 	
 end #Connector
 
@@ -108,5 +76,11 @@ if __FILE__ == $0
 	
 	terms = [montagne, plaine]
 	
-	p con.get_paragraphs(terms)
+	puts "get 10"
+	p con.get_paragraphs(terms, 10)
+	
+	puts "\n\n\n"
+	
+	puts "get all"
+	p con.get_all_paragraphs(terms)
 end #if
