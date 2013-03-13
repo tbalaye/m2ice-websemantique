@@ -22,7 +22,7 @@ class Main_Crawl
 	def run(host, user, password, database, nb_thread_crawl, nb_thread_index)
 		documents = []
 		services = []
-		Dir.glob("./Collection/*.xml") { |d| documents << d }
+		Dir.glob("../Collection/*.xml") { |d| documents << d }
 		share = Share_Document.new(documents)
 		
 
