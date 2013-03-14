@@ -21,7 +21,7 @@ class Parse
 		@document = Document_parse.new(path)
 
 		#On ajoute les termes dont on ne va pas tenir compte
-		fichier = File.open("./Stoplist/stoplist.txt", "r")
+		fichier = File.open(File.dirname(__FILE__) + "/../Stoplist/stoplist.txt", "r")
 		fichier.each_line {|ligne| @words_not_use << ligne.chomp.downcase}
 		fichier.close
 		
@@ -90,6 +90,6 @@ end #class
 
 
 if __FILE__ == $0
-	test = Parse.new("../../Collection/d001.xml")
+	test = Parse.new(File.dirname(__FILE__) + "/../../Collection/d001.xml")
 	p test.document
 end
