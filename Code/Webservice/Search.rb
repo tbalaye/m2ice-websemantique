@@ -1,6 +1,15 @@
+#!/usr//bin/ruby1.9.1
+#encoding: UTF-8
+
+$LOAD_PATH << File.dirname(__FILE__)
+
 require 'rubygems'
 require 'sinatra'
 require 'json'
+
+require 'Constant'
+
+set :port, PORT
 
 
 
