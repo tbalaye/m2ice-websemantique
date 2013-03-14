@@ -90,6 +90,6 @@ end #class
 
 
 if __FILE__ == $0
-	test = Parse.new("./Collection/d001.xml")
+	test = Parse.new("../../Collection/d001.xml")
 	p test.document
 end
