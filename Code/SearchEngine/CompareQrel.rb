@@ -7,11 +7,11 @@ require 'Queries'
 
 class CompareQrel
 	def initialize
-		Struct.new("CompareQrel", :rappel, :precision)
+		Struct.new("ComparedQrel", :rappel, :precision)
 	end #initialize
 	
 	def compare(qrels)
-		return Struct::CompareQrel.new(1, 1)
+		return Struct::ComparedQrel.new(1, 1)
 	end
 end #Connector
 

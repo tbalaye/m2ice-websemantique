@@ -19,18 +19,23 @@ class Connector
 		# get values
 		term_value = word[0, 6]
 		result = st_select_term.execute(term_value)
-		id_term = result.fetch[0]
-		
-		# Compute term
-		term = Struct::Term.new(id_term, term_value, word) if not id_term.nil?
-		
-		return term
+		if st_select_term.num_rows > 0
+			id_term = result.fetch[0]
+			
+			# Compute term
+			term = Struct::Term.new(id_term, term_value, word) if not id_term.nil?
+			
+			return term
+		else
+			return nil
+		end #if
 	end # get_term
 	
 	def get_all_paragraphs(terms)
 		return get_paragraphs(terms, -1)
 	end #get_paragraphs
 	
+	# all terms != nil
 	def get_paragraphs(terms, max_paragraphes)
 		where_condition_weight = ""
 		where_condition_term = ""
@@ -59,11 +64,25 @@ class Connector
 		select = @con.prepare(request)
 		result = select.execute
 		result.each do |p|
-			paragraphs << {xpath:p[0], pathFile:p[1], weight:p[2]}
+			get_content(p[0], p[1])
+			paragraphs << {xpath:p[0], pathFile:p[1], weight:p[2], content: get_content(p[0], p[1])}
 		end
 		
 		return paragraphs
 	end #get_paragraphs
+	
+	private
+	
+	def get_content(xpath, pathfile)
+		content = ""
+		File.open( File.dirname(__FILE__) + "/" + pathfile) do |file|
+			doc = Document.new(file)
+			root = doc.root
+			content = root.elements[xpath].text
+		end #open
+		
+		return content
+	end # get_content
 	
 end #Connector
 

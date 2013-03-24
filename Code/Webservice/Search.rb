@@ -8,21 +8,19 @@ require 'sinatra'
 require 'json'
 
 require 'Constant'
+require '../SearchEngine/SearchEngine'
+require '../SearchEngine/Constant'
 
 set :port, PORT
 
-
-
-def foo(request, is_with_ontologie)
-	return {Request: request, Results: [{Xpath:"/doc[2]/sec[1]/p[1]", Content:"J'aime la montagne"},{Xpath:"/doc[2]/sec[1]/p[2]", Content:"La montagne est ton amis"},{Xpath:"/doc[3}/sec[2]/p[3]", Content:"La marmotte aime la montagne"}], Precision: "0.3", Rappel: "0.7", Ontologie: is_with_ontologie.to_s, TimeCompute:"1.3"}.to_json
-end #foo
 
 def compute(request, is_with_ontologie)
 	if request.nil?
 		status 404
 	else
-		status 200	
-		return foo(request, is_with_ontologie)
+		status 200
+		search_engine = SearchEngine.new
+		return search_engine.search(request, 10, is_with_ontologie).to_json
 	end #if
 end #compute
 
