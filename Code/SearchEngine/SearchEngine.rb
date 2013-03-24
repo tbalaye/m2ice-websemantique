@@ -2,11 +2,12 @@
 $LOAD_PATH << File.dirname(__FILE__)
 
 require 'Connector'
-
+require 'Queries'
 
 class SearchEngine
 	def initialize()
 		@connector = Connector.new
+		@queries = Queries.new()
 	end #initialize
 	
 	def search(phrase, limite)
@@ -16,7 +17,9 @@ class SearchEngine
 		end #each
 		
 		paragraphes = @connector.get_paragraphs(terms, limite)
-		p paragraphes
+		qrels = @queries.get_qrel(phrase)
+		
+		return paragraphes
 	end #search
 	
 	def search_with_ontologie()
@@ -28,6 +31,5 @@ end #Connector
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
 	search_engine = SearchEngine.new
-	search_engine.search("montagne plaine", 2)
-	puts "ok"
+	p search_engine.search(" balade montagne amérique latine ", 10)
 end #if
