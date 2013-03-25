@@ -58,6 +58,7 @@ namespace Randopedia.Controllers
 
             ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
             ViewBag.IsSearch = true;
+            ViewBag.DetailedSearch = SearchDetail;
 
             if (Request.IsAjaxRequest())
             {
