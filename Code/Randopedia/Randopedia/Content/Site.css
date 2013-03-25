@@ -511,10 +511,8 @@ input:focus, textarea:focus {
     border: 1px solid #7ac0da;
 }
 
-input[type="checkbox"] {
-    background: transparent;
-    border: inherit;
-    width: auto;
+.search-option {
+	display:inline;
 }
 
 input[type="submit"],

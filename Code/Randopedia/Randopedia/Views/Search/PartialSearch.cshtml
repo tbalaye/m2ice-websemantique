@@ -40,8 +40,10 @@
         foreach (Randopedia.JSONObjects.ResultLine result in ViewBag.Result.Results)
         {
             <div class="result-item">
+                <b>File path : </b>@result.pathFile<br />
                 <b>Xpath : </b>@result.Xpath<br />
                 <b>Content : </b>@result.Content<br />
+                <b>Weigth : </b>@result.weight.ToString("F2")<br />
             </div>
         }
     }
