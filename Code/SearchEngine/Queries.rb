@@ -18,7 +18,7 @@ class Queries
 			doc = Document.new(file)
 			root = doc.root
 			root.elements.each("//query") do |t|
-				@queries[t.elements["text"].text] = File.dirname(__FILE__) + "/../qrels/qrel" + t.attributes["id"].to_s.sub("q", "") + ".txt"
+				@queries[t.elements["text"].text.strip] = File.dirname(__FILE__) + "/../qrels/qrel" + t.attributes["id"].to_s.sub("q", "") + ".txt"
 			end #each
 		end #open
 	end #initialize
