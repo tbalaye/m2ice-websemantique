@@ -42,14 +42,13 @@
             <div class="result-item">
                 @if (ViewBag.DetailedSearch) 
                 {
-                    <b>File path : </b>@result.pathFile<br />
-                    <b>Xpath : </b>@result.Xpath<br />
-                    <b>Weigth : </b>@result.weight.ToString("F2")<br />
-                    <b>Content : </b>@result.Content<br />
-                } else {
-                    @result.Content<br />
+                    <p>
+                        <span class="result-item-file-path">@result.pathFile.Replace("../","")</span>
+                        <span class="result-item-xpath">@result.Xpath</span>
+                        <span class="result-item-weight">@result.weight.ToString("F2")</span>
+                    </p>
                 }
-                
+                <p>@result.Content</p>
             </div>
         }
     }

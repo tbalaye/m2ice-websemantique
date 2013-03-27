@@ -51,10 +51,51 @@ body {
 .result-item {
     background-color: white;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 5px;
     margin-top: 15px;
     box-shadow:2px 2px 2px #C0C0C0 inset;
     border-radius:5px;
+}
+
+.result-item-highlight
+{
+    background-color: #d3d6f3;
+    border: 1px solid #4360e9;
+}
+
+.result-item-file-path
+{
+    background-color: #e4e8ff;
+    /*border-color: #7085ff;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 2px;
+    padding: 5px;
+}
+
+.result-item-xpath
+{
+    background-color: #e4e8ff;
+    /*border-color: #7085ff;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 2px;
+    padding: 5px;
+}
+
+.result-item-weight
+{
+    background-color: #cfe5d4;
+    /*border-color: #7085ff;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+    border-radius: 5px;
+    margin-right: 2px;
+    padding: 5px;
 }
 
 .highlighted-content {
@@ -68,7 +109,7 @@ body {
 
 #result-stats {
     background-color: lightgray;
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow:2px 2px 2px #C0C0C0 inset;
     color: grey;
     margin-top: 15px;
