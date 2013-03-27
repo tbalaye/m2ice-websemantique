@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using Randopedia.JSONObjects;
+using System.Text;
 
 namespace Randopedia.Controllers
 {
@@ -38,19 +39,26 @@ namespace Randopedia.Controllers
         {
             string json = "";
             string url = ConfigurationManager.AppSettings["SearchServer"];
-            url += (SearchMode) ? ("SearchOntologie/") : ("Search/");
+            string searchPath = ConfigurationManager.AppSettings["SearchPath"];
+            string searchOntologyPath = ConfigurationManager.AppSettings["SearchOntologyPath"];
+            url += (SearchMode) ? (searchOntologyPath) : (searchPath);
 
             try
             {
-                json = new WebClient().DownloadString(url + SearchString);
+                WebClient webClient = new WebClient();
+                webClient.Encoding = Encoding.UTF8;
+                json = webClient.DownloadString(url + SearchString);
             }
             catch (WebException ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.SearchServer = url;
             }
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+
             ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
             ViewBag.IsSearch = true;
+            ViewBag.DetailedSearch = SearchDetail;
 
             if (Request.IsAjaxRequest())
             {

@@ -9,5 +9,7 @@ namespace Randopedia.JSONObjects
     {
         public string Xpath  { get; set; }
         public string Content { get; set; }
+        public string pathFile { get; set; }
+        public double weight { get; set; }
     }
 }

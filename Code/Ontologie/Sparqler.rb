@@ -10,7 +10,7 @@ class Sparqler
 	attr_reader :client
 
 	def initialize
-		@client = SPARQL::Client.new("http://" + URL_ONTOLOGIE + ":" + PORT_ONTOLOGIE + "/space/query") 
+		@client = SPARQL::Client.new("http://" + URL_ONTOLOGIE + ":" + PORT_ONTOLOGIE + "/balades/query") 
 	end
 end
 
