@@ -12,7 +12,7 @@ class InsertDocumentDB
 		# Initialisation des requêtes
 		@st_insert_doc = connexion.prepare("INSERT INTO Document (label, pathFile) VALUES (?, ?) ON DUPLICATE KEY UPDATE label=VALUES(label)")
 		@st_insert_paragraph = connexion.prepare("INSERT IGNORE INTO Paragraph(xpath, idDocument) Value(?, ?)")
-		@st_select_paragraph = connexion.prepare("SELECT idDocument FROM Paragraph WHERE xpath = ? and idDocument = ?")
+		@st_select_paragraph = connexion.prepare("SELECT idParagraph FROM Paragraph WHERE xpath = ? and idDocument = ?")
 		@st_insert_term = connexion.prepare("INSERT IGNORE INTO Term(label) Value(?)")
 		@st_select_term = connexion.prepare("SELECT idterm FROM Term WHERE label = ?")
 		@st_insert_contain = connexion.prepare("INSERT IGNORE INTO Contain(weight, isTitle, idTerm, idParagraph) Value(?, ?, ?, ?)")
@@ -52,7 +52,9 @@ class InsertDocumentDB
 			
 		paragraphs.each do |paragraph|
 			@st_insert_paragraph.execute(paragraph.xpath, id_document)
+			
 			@sem_insert_paragraph.synchronize do
+				p @st_select_paragraph.execute(paragraph.xpath, id_document).fetch[0]
 				id_paragraph = @st_select_paragraph.execute(paragraph.xpath, id_document).fetch[0]
 				insert_contains(paragraph.terms, id_paragraph)
 			end #synchronize
