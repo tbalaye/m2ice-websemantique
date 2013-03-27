@@ -54,7 +54,6 @@ class InsertDocumentDB
 			@st_insert_paragraph.execute(paragraph.xpath, id_document)
 			
 			@sem_insert_paragraph.synchronize do
-				p @st_select_paragraph.execute(paragraph.xpath, id_document).fetch[0]
 				id_paragraph = @st_select_paragraph.execute(paragraph.xpath, id_document).fetch[0]
 				insert_contains(paragraph.terms, id_paragraph)
 			end #synchronize
