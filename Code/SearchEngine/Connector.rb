@@ -6,7 +6,6 @@ require "mysql"
 
 class Connector
 	def initialize()
-		Struct.new("Term", :id, :term, :label)
 		dbh = Mysql.init
 		dbh.options(Mysql::SET_CHARSET_NAME, 'utf8')
 		@con = dbh.real_connect(HOST, USER, PASSWORD, DATABASE)
@@ -89,6 +88,8 @@ end #Connector
 
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
+	Struct.new("Term", :id, :term, :label)
+	
 	con = Connector.new()
 	montagne = con.get_term("montagne")
 	plaine = con.get_term("plaine")
