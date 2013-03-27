@@ -23,11 +23,12 @@ namespace Randopedia.JSONObjects
             }
         }
 
-        private string precision;
-        public string Precision {
+        private double precision;
+        public double Precision
+        {
             get
             {
-                return (precision == null) ? ("") : (precision);
+                return precision;
             }
             set
             {
@@ -35,11 +36,12 @@ namespace Randopedia.JSONObjects
             }
         }
 
-        private string rappel;
-        public string Rappel {
+        private double rappel;
+        public double Rappel
+        {
             get
             {
-                return (rappel == null) ? ("") : (rappel);
+                return rappel;
             }
             set
             {
