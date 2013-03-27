@@ -11,7 +11,7 @@ class Connector
 		@con = dbh.real_connect(HOST, USER, PASSWORD, DATABASE)
 	end #initialize
 
-	def get_term(word)
+	def get_term(word, weight)
 		st_select_term = @con.prepare("SELECT idterm FROM Term WHERE label = ?")
 		term_value = nil
 		
@@ -22,7 +22,7 @@ class Connector
 			id_term = result.fetch[0]
 			
 			# Compute term
-			term = Struct::Term.new(id_term, term_value, word) if not id_term.nil?
+			term = Struct::Term.new(id_term, term_value, word, weight) if not id_term.nil?
 			
 			return term
 		else
@@ -41,7 +41,7 @@ class Connector
 		paragraphs = []
 		
 		terms.each_with_index do |t, i|
-			where_condition_weight += "(idterm = " + t.id.to_s + " and @weight := 1.0) "
+			where_condition_weight += "(idterm = " + t.id.to_s + " and @weight := " + t["weight"].to_s + ") "
 			where_condition_term += "con.idTerm = " + t.id.to_s + " "
 			if terms.size > (i + 1)
 				where_condition_weight += "or "
@@ -88,11 +88,11 @@ end #Connector
 
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
-	Struct.new("Term", :id, :term, :label)
+	Struct.new("Term", :id, :term, :label, :weight)
 	
 	con = Connector.new()
-	montagne = con.get_term("montagne")
-	plaine = con.get_term("plaine")
+	montagne = con.get_term("montagne", 1)
+	plaine = con.get_term("plaine", 2)
 	
 	terms = [montagne, plaine]
 	
