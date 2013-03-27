@@ -37,28 +37,38 @@ namespace Randopedia.Controllers
         [HttpPost]
         public ActionResult SearchRando(string SearchString, bool SearchMode, bool SearchDetail)
         {
-            string json = "";
-            string url = ConfigurationManager.AppSettings["SearchServer"];
-            string searchPath = ConfigurationManager.AppSettings["SearchPath"];
-            string searchOntologyPath = ConfigurationManager.AppSettings["SearchOntologyPath"];
-            url += (SearchMode) ? (searchOntologyPath) : (searchPath);
-
-            try
+            if (SearchString.Trim() != "")
             {
-                WebClient webClient = new WebClient();
-                webClient.Encoding = Encoding.UTF8;
-                json = webClient.DownloadString(url + SearchString);
-            }
-            catch (WebException ex)
-            {
-                ViewBag.Error = ex.Message;
-                ViewBag.SearchServer = url;
-            }
-            JsonSerializerSettings settings = new JsonSerializerSettings();
+                string json = "";
+                string url = ConfigurationManager.AppSettings["SearchServer"];
+                string searchPath = ConfigurationManager.AppSettings["SearchPath"];
+                string searchOntologyPath = ConfigurationManager.AppSettings["SearchOntologyPath"];
+                url += (SearchMode) ? (searchOntologyPath) : (searchPath);
 
-            ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
-            ViewBag.IsSearch = true;
-            ViewBag.DetailedSearch = SearchDetail;
+                try
+                {
+                    WebClient webClient = new WebClient();
+                    webClient.Encoding = Encoding.UTF8;
+                    json = webClient.DownloadString(url + SearchString);
+                }
+                catch (WebException ex)
+                {
+                    ViewBag.Error = ex.Message;
+                    ViewBag.SearchServer = url;
+                }
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+
+                ViewBag.Result = JsonConvert.DeserializeObject<Result>(json);
+                ViewBag.IsSearch = true;
+                ViewBag.DetailedSearch = SearchDetail;
+            }
+            else
+            {
+                ViewBag.Result = new Result();
+                ViewBag.IsSearch = false;
+                ViewBag.DetailedSearch = SearchDetail;
+            }
+            
 
             if (Request.IsAjaxRequest())
             {
