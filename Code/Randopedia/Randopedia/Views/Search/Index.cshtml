@@ -32,11 +32,15 @@
             </div>
             <div id="search-field">
                 @Html.TextBox("SearchString")
-                <input type="submit" value="Ok !" /><br />
+                <input type="submit" value="Allez !" /><br />
             </div>
             <div id="search-options">
-                @Html.CheckBox("SearchMode", true) Ontologie
-                @Html.CheckBox("SearchDetail", true) Détaillée
+                <div class="search-option">
+                    @Html.CheckBox("SearchMode", true) Ontologie
+                </div>
+                <div class="search-option">
+                    @Html.CheckBox("SearchDetail", true) Détaillée
+                </div>
             </div>
         </div>
     }
@@ -48,4 +52,8 @@
     <div id="result">
         @{ Html.RenderPartial("PartialSearch"); }
     </div>
+
+    <script type="text/javascript">
+        document.getElementById('SearchString').focus();
+    </script>
 </div>
