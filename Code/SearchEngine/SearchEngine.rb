@@ -35,7 +35,7 @@ class SearchEngine
 		if qrels.count > 0
 			comparedQrel = compare_qrel.compare(qrels, paragraphes)
 		else
-			comparedQrel = Struct::ComparedQrel.new(0, 0)
+			comparedQrel = Struct::ComparedQrel.new(-1, -1)
 		end #if
 		
 		# compute time
