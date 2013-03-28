@@ -37,7 +37,7 @@ class SearchEngine
 				# On ajoute les termes de l'ontologies dans les termes recherché avec les poids correspondant à leur status
 				terms_synonymes = compute_ontology(synonymes, SYNONYME_TERM_WEIGHT)
 				terms_chidren = compute_ontology(children, CHILD_TERM_WEIGHT)
-				terms_instances = compute_ontology(instances, terms, INSTANCE_TERM_WEIGHT)
+				terms_instances = compute_ontology(instances, INSTANCE_TERM_WEIGHT)
 			end
 		end #each
 		
