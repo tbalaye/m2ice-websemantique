@@ -18,13 +18,13 @@ class Queries
 			doc = Document.new(file)
 			root = doc.root
 			root.elements.each("//query") do |t|
-				@queries[t.elements["text"].text.strip] = File.dirname(__FILE__) + "/../qrels/qrel" + t.attributes["id"].to_s.sub("q", "") + ".txt"
+				@queries[t.elements["text"].text.strip.downcase] = File.dirname(__FILE__) + "/../qrels/qrel" + t.attributes["id"].to_s.sub("q", "") + ".txt"
 			end #each
 		end #open
 	end #initialize
 	
 	def get_qrel(query)
-		path = @queries[query.strip]
+		path = @queries[query.strip.downcase]
 		
 		# Si la requête existe
 		if path != nil
@@ -49,6 +49,11 @@ class Queries
 		
 		return [] #Si on n'a pas de qrel
 	end #get_number_query
+	
+	def get_qrel_name(query)
+		# on retourne le nom de la qrel sans les informations inutiles
+		return  @queries[query.strip.downcase].gsub(/.*qrels\/|.txt/, "")
+	end #
 end #Connector
 
 
