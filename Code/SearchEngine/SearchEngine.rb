@@ -91,8 +91,11 @@ class SearchEngine
 	end #def
 	
 	def compute_term_summary(terms)
-		result = []
-		terms.each{|t| result << t["label"]}
+		result = ""
+		terms.each_with_index do |t, i|
+			result += t["label"]
+			result += "|" if terms.count > (i + 1)
+		end
 		
 		return result
 	end
@@ -102,7 +105,7 @@ end #Connector
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
 	search_engine = SearchEngine.new
-	search_engine.search("paysage montagne", 100, false)
+	p search_engine.search("paysage moNtagne", 100, false)
 	
 =begin	
   sparqler = Sparqler.new
