@@ -66,7 +66,7 @@ class Connector
 		result = select.execute
 		result.each do |p|
 			get_content(p[0], p[1])
-			paragraphs << {xpath:p[0], pathFile:p[1], weight:p[2], content: get_content(p[0], p[1])}
+			paragraphs << {xpath:p[0], pathFile:p[1], weight:p[2], content: get_content(p[0], p[1]), found:false}
 		end
 		
 		return paragraphs

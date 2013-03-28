@@ -12,6 +12,7 @@ class CompareQrel
 		error = 0
 		rappel = 0.0
 		precision = 0.0
+		found_index = []
 		nb_paragraphes = paragraphes.count
 		nb_qrels = qrels.count
 
@@ -20,9 +21,10 @@ class CompareQrel
 		puts "il y a " + nb_qrels.to_s + " qrels"
 =end
 		
-		paragraphes.each do |paragraphe, index|
+		paragraphes.each do |paragraphe|
 			if qrels.detect{|qrel| (qrel["path_file"] == paragraphe[:pathFile].sub("../", "")) and (qrel["xpath"] == paragraphe[:xpath])}
 				found += 1
+				paragraphe[:found] = true
 			else
 				error += 1
 			end #if
