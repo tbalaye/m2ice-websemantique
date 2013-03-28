@@ -19,9 +19,16 @@
 <div id="result-stats">
     @if (ViewBag.Result != null && ViewBag.IsSearch)
     {
-        <b>Recherche : </b>@ViewBag.Result.Request<br />
-        <b>Rappel : </b>@ViewBag.Result.Rappel<br />
-        <b>Precision : </b>@ViewBag.Result.Precision<br />
+        if (ViewBag.Result.Rappel >= 0)
+        {
+            <b>Rappel : </b>@ViewBag.Result.Rappel<br />
+        } else {
+            <b>Pas de qrel associée</b>   
+        }
+        if (ViewBag.Result.Precision >= 0)
+        {
+            <b>Precision : </b>@ViewBag.Result.Precision<br />
+        }
     } 
     else if (ViewBag.Result == null) 
     {

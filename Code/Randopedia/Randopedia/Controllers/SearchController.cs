@@ -37,6 +37,10 @@ namespace Randopedia.Controllers
         [HttpPost]
         public ActionResult SearchRando(string SearchString, bool SearchMode, bool SearchDetail)
         {
+            ViewBag.Result = new Result();
+            ViewBag.IsSearch = false;
+            ViewBag.DetailedSearch = SearchDetail;
+
             if (SearchString.Trim() != "")
             {
                 string json = "";
@@ -62,13 +66,6 @@ namespace Randopedia.Controllers
                 ViewBag.IsSearch = true;
                 ViewBag.DetailedSearch = SearchDetail;
             }
-            else
-            {
-                ViewBag.Result = new Result();
-                ViewBag.IsSearch = false;
-                ViewBag.DetailedSearch = SearchDetail;
-            }
-            
 
             if (Request.IsAjaxRequest())
             {
