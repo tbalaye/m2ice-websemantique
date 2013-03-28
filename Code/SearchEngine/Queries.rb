@@ -51,8 +51,14 @@ class Queries
 	end #get_number_query
 	
 	def get_qrel_name(query)
-		# on retourne le nom de la qrel sans les informations inutiles
-		return  @queries[query.strip.downcase].gsub(/.*qrels\/|.txt/, "")
+		result = @queries[query.strip.downcase]
+		
+		if result != nil
+			# on retourne le nom de la qrel sans les informations inutiles
+			return result.gsub(/.*qrels\/|.txt/, "")
+		else
+			return ""
+		end #if
 	end #
 end #Connector
 
