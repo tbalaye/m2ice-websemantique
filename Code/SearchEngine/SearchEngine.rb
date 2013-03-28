@@ -4,6 +4,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'Connector'
 require 'Queries'
 require 'CompareQrel'
+require 'json'
 require '../Ontologie/Sparqler'
 require '../Ontologie/Constant'
 
@@ -64,7 +65,7 @@ class SearchEngine
 		end_time = Time.now
 		time_compute = end_time - begin_time
 		
-		return {
+		result =  {
 					Request: phrase.strip, Results: paragraphes,
 					Precision: comparedQrel["rappel"], Rappel: comparedQrel["precision"],
 					NameQrel: name_qrel, Ontologie: with_ontology,
@@ -72,6 +73,8 @@ class SearchEngine
 					TermChildren: compute_term_summary(terms_chidren), TermInstances: compute_term_summary(terms_instances),
 					TimeCompute: time_compute
 				}
+				
+		return result
 	end #search
 	
 	
@@ -91,11 +94,8 @@ class SearchEngine
 	end #def
 	
 	def compute_term_summary(terms)
-		result = ""
-		terms.each_with_index do |t, i|
-			result += t["label"]
-			result += "|" if terms.count > (i + 1)
-		end
+		result = []
+		terms.each{|t| result << t["label"].force_encoding('UTF-8')}
 		
 		return result
 	end
@@ -105,7 +105,7 @@ end #Connector
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
 	search_engine = SearchEngine.new
-	p search_engine.search("paysage moNtagne", 100, false)
+	search_engine.search("paysage moNtagne", 100, false)
 	
 =begin	
   sparqler = Sparqler.new
