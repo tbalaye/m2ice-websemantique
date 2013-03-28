@@ -45,6 +45,23 @@
     }
 </div>
 @using System.Text.RegularExpressions
+@functions {
+    public String format(String[] terms, String content, String cssProperties) {
+        string regexTerm = "((?<=[\\s|\\.|\\,|!|?|-])|^)(";
+        regexTerm += terms[0].Substring(0, Math.Min(terms[0].Length, 6)) + "[a-z]*";
+        foreach (String term in terms)
+        {
+            regexTerm += "|" + term.Substring(0, Math.Min(term.Length, 6)) + "[a-z]*";
+        }
+        regexTerm += ")(?=[\\s|\\.|\\,|!|?|-])";
+        Regex regex = new Regex(regexTerm, RegexOptions.IgnoreCase);
+        foreach (Match match in regex.Matches(content))
+        {
+            content = Regex.Replace(content, "((?<=[\\s|\\.|\\,|!|?|-|'])|^)(" + match.Value + ")(?=[\\s|\\.|\\,|!|?|-])", "<span class=\"" + cssProperties + "\">" + match.Value + "</span>");
+        }
+        return content;
+    }
+}
 <div class="result-list">
     @if (ViewBag.Result != null)
     {
@@ -53,19 +70,24 @@
             String[] terms = ViewBag.Result.TermSimple;
             if (terms.Length > 0)
             {
-                string regexTerm = "((?<=[\\s|\\.|\\,|!|?|-])|^)(";
-                regexTerm += terms[0].Substring(0, Math.Min(terms[0].Length, 6)) + "[a-z]*";
-                foreach (String term in terms)
-                {
-                    regexTerm += "|" + term.Substring(0, Math.Min(term.Length, 6)) + "[a-z]*";
-                }
-                regexTerm += ")(?=[\\s|\\.|\\,|!|?|-])";
-                Regex regex = new Regex(regexTerm, RegexOptions.IgnoreCase);
-                foreach (Match match in regex.Matches(result.Content))
-                {
-                    result.Content = Regex.Replace(result.Content, "((?<=[\\s|\\.|\\,|!|?|-])|^)(" + match.Value + ")(?=[\\s|\\.|\\,|!|?|-])", "<span class=\"result-item-highlight\">" + match.Value + "</span>");
-                }
+                result.Content = format(terms, result.Content, "result-item-highlight");
             }
+            terms = ViewBag.Result.TermSynonymes;
+            if (terms.Length > 0)
+            {
+                result.Content = format(terms, result.Content, "result-item-highlight-synonym");
+            }
+            terms = ViewBag.Result.TermChildren;
+            if (terms.Length > 0)
+            {
+                result.Content = format(terms, result.Content, "result-item-highlight-children");
+            }
+            terms = ViewBag.Result.TermInstances;
+            if (terms.Length > 0)
+            {
+                result.Content = format(terms, result.Content, "result-item-highlight-instances");
+            }
+            
             <div class="result-item">
                 @if (ViewBag.DetailedSearch) 
                 {

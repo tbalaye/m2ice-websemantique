@@ -66,22 +66,26 @@ body {
 
 .result-item-highlight
 {
+    background-color: #d1d6ff;
     border: 1px solid blue;
 }
 
 .result-item-highlight-synonym
 {
+    background-color: #fcc2c2;
     border: 1px solid red;
 }
 
 .result-item-highlight-children
 {
+    background-color: #c4ffce;
     border: 1px solid green;
 }
 
 .result-item-highlight-instances
 {
-    border: 1px solid violet;
+    background-color: #f7c6ff;
+    border: 1px solid #f91efb;
 }
 
 .result-item-file-path
