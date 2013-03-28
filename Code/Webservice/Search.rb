@@ -20,7 +20,7 @@ def compute(request, is_with_ontologie)
 	else
 		status 200
 		search_engine = SearchEngine.new
-		return search_engine.search(request, 10, is_with_ontologie).to_json
+		return search_engine.search(request, MAX_RESULT, is_with_ontologie).to_json
 	end #if
 end #compute
 
