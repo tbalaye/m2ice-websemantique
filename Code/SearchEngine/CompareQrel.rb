@@ -14,9 +14,11 @@ class CompareQrel
 		precision = 0.0
 		nb_paragraphes = paragraphes.count
 		nb_qrels = qrels.count
-		
+
+=begin	
 		puts "il y a " + nb_paragraphes.to_s + " paragraphes"
 		puts "il y a " + nb_qrels.to_s + " qrels"
+=end
 		
 		paragraphes.each do |paragraphe, index|
 			if qrels.detect{|qrel| (qrel["path_file"] == paragraphe[:pathFile].sub("../", "")) and (qrel["xpath"] == paragraphe[:xpath])}
@@ -29,11 +31,12 @@ class CompareQrel
 		rappel = found.to_f / nb_qrels.to_f if nb_qrels > 0
 		precision = found.to_f / nb_paragraphes.to_f if nb_paragraphes > 0
 		
+=begin
 		puts "found: " + found.to_s
 		puts "error: " + error.to_s
 		puts "rappel: " + rappel.to_s
 		puts "precision: " + precision.to_s
-		
+=end
 		
 		return Struct::ComparedQrel.new(rappel, precision)
 	end
