@@ -4,7 +4,6 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'Connector'
 require 'Queries'
 require 'CompareQrel'
-require 'json'
 require '../Ontologie/Sparqler'
 require '../Ontologie/Constant'
 
@@ -73,7 +72,6 @@ class SearchEngine
 					TermChildren: compute_term_summary(terms_chidren), TermInstances: compute_term_summary(terms_instances),
 					TimeCompute: time_compute
 				}
-				
 		return result
 	end #search
 	
