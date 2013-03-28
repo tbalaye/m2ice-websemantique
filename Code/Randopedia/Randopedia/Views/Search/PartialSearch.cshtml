@@ -19,15 +19,19 @@
 <div id="result-stats">
     @if (ViewBag.Result != null && ViewBag.IsSearch)
     {
+        if (ViewBag.Result.NameQrel != "")
+        {
+            <b>Qrel trouvée : </b>@ViewBag.Result.NameQrel<br />
+        }
         if (ViewBag.Result.Rappel >= 0)
         {
-            <b>Rappel : </b>@ViewBag.Result.Rappel<br />
+            <b>Rappel : </b>@((ViewBag.Result.Rappel * 100).ToString("0.00") + " %")<br />
         } else {
             <b>Pas de qrel associée</b>   
         }
         if (ViewBag.Result.Precision >= 0)
         {
-            <b>Precision : </b>@ViewBag.Result.Precision<br />
+            <b>Precision : </b>@((ViewBag.Result.Precision * 100).ToString("0.00") + " %")<br />
         }
     } 
     else if (ViewBag.Result == null) 
@@ -40,12 +44,28 @@
         <b>Saisissez votre recherche ci-dessus</b>
     }
 </div>
-
+@using System.Text.RegularExpressions
 <div class="result-list">
     @if (ViewBag.Result != null)
     {
         foreach (Randopedia.JSONObjects.ResultLine result in ViewBag.Result.Results)
         {
+            String[] terms = ViewBag.Result.TermSimple;
+            if (terms.Length > 0)
+            {
+                string regexTerm = "((?<=[\\s|\\.|\\,|!|?|-])|^)(";
+                regexTerm += terms[0].Substring(0, Math.Min(terms[0].Length, 6)) + "[a-z]*";
+                foreach (String term in terms)
+                {
+                    regexTerm += "|" + term.Substring(0, Math.Min(term.Length, 6)) + "[a-z]*";
+                }
+                regexTerm += ")(?=[\\s|\\.|\\,|!|?|-])";
+                Regex regex = new Regex(regexTerm, RegexOptions.IgnoreCase);
+                foreach (Match match in regex.Matches(result.Content))
+                {
+                    result.Content = Regex.Replace(result.Content, "((?<=[\\s|\\.|\\,|!|?|-])|^)(" + match.Value + ")(?=[\\s|\\.|\\,|!|?|-])", "<span class=\"result-item-highlight\">" + match.Value + "</span>");
+                }
+            }
             <div class="result-item">
                 @if (ViewBag.DetailedSearch) 
                 {
@@ -53,9 +73,13 @@
                         <span class="result-item-file-path">@result.pathFile.Replace("../","")</span>
                         <span class="result-item-xpath">@result.Xpath</span>
                         <span class="result-item-weight">@result.weight.ToString("F2")</span>
+                        @if (result.found)
+                        {
+                            <span class="result-item-found">Dans la qrel</span>
+                        }
                     </p>
                 }
-                <p>@result.Content</p>
+                <p>@Html.Raw(result.Content)</p>
             </div>
         }
     }
