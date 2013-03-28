@@ -49,11 +49,13 @@ class Connector
 			end # if
 		end #each
 		
-		request = "SELECT par.xpath, doc.pathFile, SUM(terw.weight) as weight FROM Contain con, Document doc, Paragraph par,  "
+		request = "SELECT result.xpath, result.pathFile, result.weight FROM "
+		request += "(SELECT par.xpath, doc.pathFile, SUM(terw.weight) as weight FROM Contain con, Document doc, Paragraph par,  "
 		request += "(SELECT (weight * @weight) as weight, idParagraph, idTerm FROM Contain WHERE (" + where_condition_weight + ")) terw "
 		request += "WHERE terw.idParagraph = con.idParagraph and par.idDocument = doc.idDocument and par.idParagraph = con.idParagraph and (" + where_condition_term +") "
 		request += "GROUP BY con.idParagraph "
-		request += "ORDER BY weight desc "
+		request += "ORDER BY weight desc) result "
+		request += "WHERE result.weight > " + WEIGHT_MIN.to_s + " "
 		if(max_paragraphes < 0)
 			request += ";"
 		else

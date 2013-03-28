@@ -26,8 +26,8 @@ class CompareQrel
 			end #if
 		end #each
 		
-		rappel = found.to_f / nb_qrels.to_f
-		precision = found.to_f / nb_paragraphes.to_f
+		rappel = found.to_f / nb_qrels.to_f if nb_qrels > 0
+		precision = found.to_f / nb_paragraphes.to_f if nb_paragraphes > 0
 		
 		puts "found: " + found.to_s
 		puts "error: " + error.to_s
