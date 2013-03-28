@@ -2,6 +2,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 
 require 'Connector'
+require 'Constant'
 require 'rexml/document'
 include REXML
 
@@ -10,7 +11,6 @@ class Queries
 	def initialize()
 		@queries = {}
 		@request_compute = {}
-		Struct.new("Qrel", :path_file, :xpath)
 		path = File.dirname(__FILE__) + "/../Queries/queries.xml"
 		
 		# Calcul des paires qureies --> paths

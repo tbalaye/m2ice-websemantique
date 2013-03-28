@@ -88,8 +88,6 @@ end #Connector
 
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
-	Struct.new("Term", :id, :term, :label, :weight)
-	
 	con = Connector.new()
 	montagne = con.get_term("montagne", 1)
 	plaine = con.get_term("plaine", 2)

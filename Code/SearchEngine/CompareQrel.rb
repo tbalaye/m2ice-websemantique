@@ -42,8 +42,6 @@ end #Connector
 
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
-	Struct.new("ComparedQrel", :rappel, :precision)
-	
 	compare_qrel = CompareQrel.new()
 	
 	query = Queries.new

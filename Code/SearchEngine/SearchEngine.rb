@@ -9,9 +9,6 @@ require '../Ontologie/Constant'
 
 class SearchEngine
 	def initialize()
-		Struct.new("ComparedQrel", :rappel, :precision)
-		Struct.new("Term", :id, :term, :label, :weight)
-		
 		@sparqler = Sparqler.new
 		@connector = Connector.new
 		@queries = Queries.new()
@@ -78,7 +75,7 @@ end #Connector
 # Restriction à l'exécution : il n'est pas exécuté si il est juste importé
 if __FILE__ == $0
 	search_engine = SearchEngine.new
-	search_engine.search("paysage montagne", 100, true)
+	search_engine.search("paysage montagne", 100, false)
 	
 =begin	
   sparqler = Sparqler.new
