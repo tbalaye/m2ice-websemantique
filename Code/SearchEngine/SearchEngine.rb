@@ -95,7 +95,7 @@ class SearchEngine
 		results = []
 		terms.each do |t|
 			term = t["label"].force_encoding('UTF-8')
-			results << term if term.size > 3
+			results << term if term.size > 2
 		end #each
 		
 		return results
