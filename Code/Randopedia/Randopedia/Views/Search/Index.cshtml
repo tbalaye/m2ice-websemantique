@@ -13,14 +13,12 @@
     var options = new AjaxOptions()
     {
         UpdateTargetId = "result",
+        OnBegin = "if ($('#result-list') != undefined) { $('#result-div').html(\"\"); }",
         HttpMethod = "Post",
         LoadingElementId = "searching",
         LoadingElementDuration = 500
     };
 }
-
-
-
 
 <div id="search-box">
     
@@ -57,3 +55,4 @@
         document.getElementById('SearchString').focus();
     </script>
 </div>
+
