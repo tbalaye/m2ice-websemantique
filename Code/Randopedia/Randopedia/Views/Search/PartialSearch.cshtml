@@ -82,13 +82,16 @@
 <div class="result-list">
     @if (ViewBag.Result != null)
     {
-        <div id="result-legende">
-            <b>Légende : </b>
-            <span class="result-item-highlight" title="Terme recherché">terme recherché</span>
-            <span class="result-item-highlight-synonym" title="Synonyme">terme synonyme</span>
-            <span class="result-item-highlight-children" title="Enfant">terme enfant</span>
-            <span class="result-item-highlight-instances" title="Instance">terme instance</span>
-        </div>
+        if (ViewBag.IsSearch && ViewBag.SearchOntology)
+        {
+            <div id="result-legende">
+                <b>Légende : </b>
+                <span class="result-item-highlight" title="Terme recherché">terme recherché</span>
+                <span class="result-item-highlight-synonym" title="Synonyme">terme synonyme</span>
+                <span class="result-item-highlight-children" title="Enfant">terme enfant</span>
+                <span class="result-item-highlight-instances" title="Instance">terme instance</span>
+            </div>
+        }
         foreach (Randopedia.JSONObjects.ResultLine result in ViewBag.Result.Results)
         {
             String[] terms = ViewBag.Result.TermSimple;
