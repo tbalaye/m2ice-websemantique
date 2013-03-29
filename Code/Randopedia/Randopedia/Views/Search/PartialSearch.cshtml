@@ -51,7 +51,7 @@
         regexTerm += terms[0].Substring(0, Math.Min(terms[0].Length, 6)) + "[a-z]*";
         foreach (String term in terms)
         {
-            regexTerm += "|" + term.Substring(0, Math.Min(term.Length, 6)) + "[a-z]*";
+            regexTerm += "|" + term.Substring(0, Math.Min(term.Length, 6)) + "[a-zâãäåæçèéêëìíîïðñòóôõøùúûüýþÿı]*";
         }
         regexTerm += ")((?=[\\s|\\.|\\,|!|?|\\-|:|;])|$)";
         Regex regex = new Regex(regexTerm, RegexOptions.IgnoreCase);
