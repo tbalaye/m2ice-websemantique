@@ -1,4 +1,5 @@
-﻿<div id="search-stats">
+﻿<div id="result-div">
+<div id="search-stats">
     @if (ViewBag.Result != null && ViewBag.IsSearch)
     {
         if (ViewBag.Result.Results.Length > 0)
@@ -46,7 +47,7 @@
 </div>
 @using System.Text.RegularExpressions
 @functions {
-    public String format(String[] terms, String content, String cssProperties) {
+    public String format(String[] terms, String content, String cssProperties, String eltTitle) {
         string regexTerm = "((?<=[\\s|\\.|\\,|!|?|\\-|'|:|;])|^)(";
         if (terms[0].Length >= 6)
         {
@@ -72,7 +73,7 @@
         foreach (Match match in regex.Matches(content))
         {
             if (match.Value.Length > 0) {
-                content = Regex.Replace(content, "((?<=[\\s|\\.|\\,|!|?|\\-|'|:|;])|^)(" + match.Value + ")((?=[\\s|\\.|\\,|!|?|\\-|:|;])|$)", "<span class=\"" + cssProperties + "\">" + match.Value + "</span>"); 
+                content = Regex.Replace(content, "((?<=[\\s|\\.|\\,|!|?|\\-|'|:|;])|^)(" + match.Value + ")((?=[\\s|\\.|\\,|!|?|\\-|:|;])|$)", "<span class=\"" + cssProperties + "\" title=\"" + eltTitle + "\">" + match.Value + "</span>"); 
             }
         }
         return content;
@@ -86,22 +87,22 @@
             String[] terms = ViewBag.Result.TermSimple;
             if (terms.Length > 0)
             {
-                result.Content = format(terms, result.Content, "result-item-highlight");
+                result.Content = format(terms, result.Content, "result-item-highlight", "Terme recherché");
             }
             terms = ViewBag.Result.TermSynonymes;
             if (terms.Length > 0)
             {
-                result.Content = format(terms, result.Content, "result-item-highlight-synonym");
+                result.Content = format(terms, result.Content, "result-item-highlight-synonym", "Synonyme");
             }
             terms = ViewBag.Result.TermChildren;
             if (terms.Length > 0)
             {
-                result.Content = format(terms, result.Content, "result-item-highlight-children");
+                result.Content = format(terms, result.Content, "result-item-highlight-children", "Enfant");
             }
             terms = ViewBag.Result.TermInstances;
             if (terms.Length > 0)
             {
-                result.Content = format(terms, result.Content, "result-item-highlight-instances");
+                result.Content = format(terms, result.Content, "result-item-highlight-instances", "Instance");
             }
             
             <div class="result-item">
@@ -121,5 +122,6 @@
             </div>
         }
     }
+</div>
 </div>
 
