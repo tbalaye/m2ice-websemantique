@@ -56,6 +56,15 @@ body {
     padding: 10px;
 }
 
+#result-legende
+{
+    background-color: #e2e2e2;
+    border-radius: 5px;
+    box-shadow:2px 2px 2px #C0C0C0 inset;
+    margin-top: 15px;
+    padding: 10px;
+}
+
 /*
 .result-item-highlight
 {
