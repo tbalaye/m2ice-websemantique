@@ -92,10 +92,13 @@ class SearchEngine
 	end #def
 	
 	def compute_term_summary(terms)
-		result = []
-		terms.each{|t| result << t["label"].force_encoding('UTF-8')}
+		results = []
+		terms.each do |t|
+			term = t["label"].force_encoding('UTF-8')
+			results << term if term.size > 3
+		end #each
 		
-		return result
+		return results
 	end
 end #Connector
 
