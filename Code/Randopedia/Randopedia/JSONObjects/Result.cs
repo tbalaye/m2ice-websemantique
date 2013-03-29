@@ -23,6 +23,19 @@ namespace Randopedia.JSONObjects
             }
         }
 
+        private string nameQrel;
+        public string NameQrel
+        {
+            get
+            {
+                return nameQrel;
+            }
+            set
+            {
+                nameQrel = value;
+            }
+        }
+
         private double precision;
         public double Precision
         {
@@ -61,6 +74,70 @@ namespace Randopedia.JSONObjects
             set
             {
                 results = value;
+            }
+        }
+
+        private String[] termSimple;
+        /// <summary>
+        /// Termes saisis par l'utilisateur
+        /// </summary>
+        public String[] TermSimple
+        {
+            get
+            {
+                return termSimple;
+            }
+            set
+            {
+                termSimple = value;
+            }
+        }
+
+        private String[] termSynonymes;
+        /// <summary>
+        /// Synonymes trouvés par l'ontologie
+        /// </summary>
+        public String[] TermSynonymes
+        {
+            get
+            {
+                return termSynonymes;
+            }
+            set
+            {
+                termSynonymes = value;
+            }
+        }
+
+        private String[] termChildren;
+        /// <summary>
+        /// Fils trouvés par l'ontologie
+        /// </summary>
+        public String[] TermChildren
+        {
+            get
+            {
+                return termChildren;
+            }
+            set
+            {
+                termChildren = value;
+            }
+        }
+
+        private String[] termInstances;
+        /// <summary>
+        /// Instances trouvées par l'ontologie
+        /// </summary>
+        public String[] TermInstances
+        {
+            get
+            {
+                return termInstances;
+            }
+            set
+            {
+                termInstances = value;
             }
         }
 

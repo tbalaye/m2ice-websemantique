@@ -50,17 +50,42 @@ body {
 
 .result-item {
     background-color: white;
-    padding: 10px;
     border-radius: 5px;
-    margin-top: 15px;
     box-shadow:2px 2px 2px #C0C0C0 inset;
-    border-radius:5px;
+    margin-top: 15px;
+    padding: 10px;
 }
 
+/*
 .result-item-highlight
 {
     background-color: #d3d6f3;
     border: 1px solid #4360e9;
+}
+*/
+
+.result-item-highlight
+{
+    background-color: #d1d6ff;
+    border: 1px solid blue;
+}
+
+.result-item-highlight-synonym
+{
+    background-color: #fcc2c2;
+    border: 1px solid red;
+}
+
+.result-item-highlight-children
+{
+    background-color: #c4ffce;
+    border: 1px solid green;
+}
+
+.result-item-highlight-instances
+{
+    background-color: #f7c6ff;
+    border: 1px solid #f91efb;
 }
 
 .result-item-file-path
@@ -94,6 +119,18 @@ body {
     /*border-style: solid;*/
     /*border-width: 1px;*/
     border-radius: 5px;
+    margin-right: 2px;
+    padding: 5px;
+}
+
+.result-item-found
+{
+    background-color: green;
+    /*border-color: #7085ff;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
+    border-radius: 5px;
+    color: white;
     margin-right: 2px;
     padding: 5px;
 }
